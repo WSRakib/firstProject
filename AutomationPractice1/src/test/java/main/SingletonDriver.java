@@ -10,11 +10,20 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 public class SingletonDriver {
 
 	public SingletonDriver(WebDriver driver) {
-		this.driver = driver;
+		SingletonDriver.driver = driver;
 	}
 
-	private WebDriver driver;
-
+	protected static WebDriver driver = null;
+	private static SingletonDriver driverInstence = null;
+	
+	public static SingletonDriver getThisClassInstence() {
+		
+		if(driverInstence == null)
+			driverInstence = new SingletonDriver(driver );
+		return driverInstence;
+			
+	}
+	
 	public WebDriver getDriver() {
 		return driver;
 	}
@@ -22,30 +31,34 @@ public class SingletonDriver {
 
 	public WebDriver openBrowser(String browser, String url){
 
-		if(browser.equalsIgnoreCase("Chrome")) {
-			driver = new ChromeDriver();
-			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-			driver.manage().window().maximize();
-			driver.get("https://www.google.com/");
-			driver.navigate().to(url);
+		if(driver == null) {
+			if(browser.equalsIgnoreCase("Chrome")) {
+				driver = new ChromeDriver();
+				driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+				driver.manage().window().maximize();
+				driver.get("https://www.google.com/");
+				driver.navigate().to(url);
+			}
+			else if(browser.equalsIgnoreCase("FireFox")){
+				driver = new FirefoxDriver();
+				driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+				driver.manage().window().maximize();
+				driver.get("https://www.google.com/");
+				driver.navigate().to(url);
+			}
+			else if(browser.equalsIgnoreCase("Edge")) {
+				driver = new EdgeDriver();
+				driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+				driver.manage().window().maximize();
+				driver.get("https://www.google.com/");
+				driver.navigate().to(url);
+			}
+			else {
+				System.out.println("Inorrect Driver!");
+			}
+			
 		}
-		else if(browser.equalsIgnoreCase("FireFox")){
-			driver = new FirefoxDriver();
-			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-			driver.manage().window().maximize();
-			driver.get("https://www.google.com/");
-			driver.navigate().to(url);
-		}
-		else if(browser.equalsIgnoreCase("Edge")) {
-			driver = new EdgeDriver();
-			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-			driver.manage().window().maximize();
-			driver.get("https://www.google.com/");
-			driver.navigate().to(url);
-		}
-		else {
-			System.out.println("Inorrect Driver!");
-		}
+		
 		return driver;
 	}
 
