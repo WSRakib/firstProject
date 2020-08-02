@@ -9,12 +9,12 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class SingletonDriver {
 
-	public SingletonDriver(WebDriver driver) {
+	private SingletonDriver(WebDriver driver) {
 		SingletonDriver.driver = driver;
 	}
 
 	protected static WebDriver driver = null;
-	private static SingletonDriver driverInstence = null;
+	private static SingletonDriver driverInstence;
 	
 	public static SingletonDriver getThisClassInstence() {
 		
